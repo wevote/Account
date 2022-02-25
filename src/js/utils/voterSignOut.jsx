@@ -5,7 +5,7 @@ import AppObservableStore from '../stores/AppObservableStore';
 export default function voterSignOut () { // To discuss - having Store/Actions vs. voterSignOut as a function
   AppObservableStore.setShowSignInModal(false);
   AppObservableStore.unsetStoreSignInStartFullUrl();
-  VoterActions.voterSignOut();
+  VoterActions.voterSignOut();   // Eleven stores or more, act on this action
   Cookies.remove('voter_device_id');
   Cookies.remove('voter_device_id', { path: '/' });
   Cookies.remove('voter_device_id', { path: '/', domain: 'wevote.us' });

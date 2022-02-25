@@ -37,10 +37,10 @@ module.exports = {
   GOOGLE_PEOPLE_API_KEY: '',
   GOOGLE_PEOPLE_API_CLIENT_ID: '',
 
-  // We currently store the Google Places API key in /src/index.html
-
+  // These are publishable keys (not secret)
   FACEBOOK_APP_ID: '1097389196952441',
+  FULL_STORY_ORG: '',
+  GOOGLE_ANALYTICS_TRACKING_ID: '',
 
-  // This is the publishable key (not secret)
   STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',
 };

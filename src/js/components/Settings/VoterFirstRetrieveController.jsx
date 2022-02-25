@@ -13,7 +13,7 @@ class VoterFirstRetrieveController extends Component {
   voterFirstRetrieve = () => {
     initializejQuery(() => {
       const voterFirstRetrieveInitiated = AppObservableStore.voterFirstRetrieveInitiated();
-      // console.log('SignInModalController voterFirstRetrieveInitiated: ', voterFirstRetrieveInitiated);
+      // console.log('VoterFirstRetrieveController voterFirstRetrieveInitiated: ', voterFirstRetrieveInitiated);
       if (!voterFirstRetrieveInitiated) {
         AppObservableStore.setVoterFirstRetrieveInitiated(true);
         VoterActions.voterRetrieve();

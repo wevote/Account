@@ -1,5 +1,8 @@
+import ReactGA from 'react-ga';
 import { BrowserRouter } from 'react-router-dom';
 import webAppConfig from '../../../config';
+import AppObservableStore from '../../../stores/AppObservableStore';
+import { normalizedHrefPage } from '../../utils/hrefUtils';
 
 // https://stackoverflow.com/questions/34093913/how-to-debug-react-router
 // When a history.push is called correctly for the v5 react-router, the incoming
@@ -31,11 +34,19 @@ export default class WeVoteRouter extends BrowserRouter {
     super(props);
     global.weVoteGlobalHistory = this.history;
     if (webAppConfig.LOG_ROUTING) {
-      console.log('Router: initial history is: ', JSON.stringify(this.history, null, 2));
-      this.history.listen((location, action) => {
-        console.log(`Router: The current URL is ${location.pathname}${location.search}${location.hash}`);
-        console.log(`Router: The last navigation action was ${action}`);
-      });
+      console.log('Router:  initial history is: ', JSON.stringify(this.history, null, 2));
     }
+    this.history.listen((location, action) => {
+      AppObservableStore.incrementObservableUpdateCounter();   // Encourage an update of Header.jsx on each push
+      const currentPathname = location.pathname || '';
+      AppObservableStore.setCurrentPathname(currentPathname);
+      if (AppObservableStore.getGoogleAnalyticsEnabled()) {
+        ReactGA.pageview(normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight');
+      }
+      if (webAppConfig.LOG_ROUTING) {
+        console.log(` Router: The current URL is ${location.pathname}${location.search}${location.hash}`);
+        console.log(` Router: The last navigation action was ${action}`, JSON.stringify(this.history, null, 2));
+      }
+    });
   }
 }
