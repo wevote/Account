@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Ballot } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import AppObservableStore, { messageService } from '../stores/AppObservableStore';
 import historyPush from '../common/utils/historyPush';
 import { renderLog } from '../common/utils/logging';
 
@@ -12,16 +13,35 @@ class PageNotFound extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      chosenWebsiteName: '',
     };
+  }
+
+  componentDidMount () {
+    // console.log('PageNotFound componentDidMount');
+    this.onAppObservableStoreChange();
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
+  }
+
+  componentWillUnmount () {
+    this.appStateSubscription.unsubscribe();
+  }
+
+  onAppObservableStoreChange () {
+    const chosenWebsiteName = AppObservableStore.getChosenWebsiteName();
+    this.setState({
+      chosenWebsiteName,
+    });
   }
 
   render () {
     renderLog('PageNotFound');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
+    const { chosenWebsiteName } = this.state;
     return (
       <div>
-        <Helmet title="Page Not Found - WeVote.US" />
-        <PageWrapper>
+        <Helmet title={`Page Not Found - ${chosenWebsiteName}`} />
+        <PageWrapperNotFound>
           <EmptyBallotMessageContainer>
             <EmptyBallotText>Page not found.</EmptyBallotText>
             <Button
@@ -34,7 +54,7 @@ class PageNotFound extends Component {
               Go to Home Page
             </Button>
           </EmptyBallotMessageContainer>
-        </PageWrapper>
+        </PageWrapperNotFound>
       </div>
     );
   }
@@ -72,7 +92,7 @@ const EmptyBallotText = styled.p`
   }
 `;
 
-const PageWrapper = styled.div`
+const PageWrapperNotFound = styled.div`
   margin: 0 15px;
 `;
 

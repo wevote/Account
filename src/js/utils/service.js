@@ -1,7 +1,7 @@
 import assign from 'object-assign';
 import url from 'url';
-import webAppConfig from '../config';
 import Cookies from '../common/utils/js-cookie/Cookies';
+import webAppConfig from '../config';
 import { httpLog } from '../common/utils/logging';
 /* eslint no-param-reassign: 0 */
 
@@ -14,9 +14,8 @@ const defaults = {
   query: {},
   method: 'GET',
   data () {
-    // console.log('----------- voter_device_id sent with request in service.js/data: ', Cookies.get('voter_device_id'));
     return Cookies.get('voter_device_id') ? {
-      // csrfmiddlewaretoken: cookies.getItem('csrftoken'),
+      // csrfmiddlewaretoken: Cookies.get('csrftoken'),
       voter_device_id: Cookies.get('voter_device_id'),
     } : {};
   },
@@ -51,7 +50,7 @@ function innerAjax (options) {
       options.endpoint === 'reactionLikeStatusRetrieve' ||
       options.endpoint === 'voterUpdate') {
     options.method = 'POST';
-    // const csrftoken = cookies.getItem('csrftoken');
+    // const csrftoken = Cookies.get('csrftoken');
     // const headers = new Headers();
     // headers.append('X-CSRFToken', csrftoken);
     // headers.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');

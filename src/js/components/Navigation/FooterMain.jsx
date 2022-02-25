@@ -19,16 +19,14 @@ class FooterMain extends Component {
   componentDidMount () {
     // console.log('FooterMain componentDidMount');
     this.onAppObservableStoreChange();
-    this.appStateSubscription = messageService.getMessage().subscribe((msg) => this.onAppObservableStoreChange(msg));
+    this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
   }
 
   componentWillUnmount () {
     this.appStateSubscription.unsubscribe();
   }
 
-  // eslint-disable-next-line no-unused-vars
   onAppObservableStoreChange () {
-    // console.log('------ FooterMain, onAppObservableStoreChange received: ', msg);
     const inPrivateLabelMode = AppObservableStore.getHideWeVoteLogo(); // Using this setting temporarily
     const siteConfigurationHasBeenRetrieved = AppObservableStore.siteConfigurationHasBeenRetrieved();
     this.setState({
@@ -50,7 +48,7 @@ class FooterMain extends Component {
     }
 
     return (
-      <OuterWrapper>
+      <OuterWrapperFooter>
         <InnerWrapper>
           {inPrivateLabelMode ? (
             <FooterMainPrivateLabeled />
@@ -58,7 +56,7 @@ class FooterMain extends Component {
             <FooterMainWeVote />
           )}
         </InnerWrapper>
-      </OuterWrapper>
+      </OuterWrapperFooter>
     );
   }
 }
@@ -83,7 +81,7 @@ const InnerWrapper = styled.div`
   }
 `;
 
-const OuterWrapper = styled.div`
+const OuterWrapperFooter = styled.div`
   background-color: #f6f4f6;
   border-top: 1px solid #ddd;
   margin-top: 90px;
