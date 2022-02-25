@@ -11,6 +11,7 @@ export const messageService = {
 };
 
 const nonFluxState = {
+  chosenGoogleAnalyticsTrackingID: false,
   chosenPreventSharingOpinions: false,
   chosenReadyIntroductionText: '',
   chosenReadyIntroductionTitle: '',
@@ -18,6 +19,8 @@ const nonFluxState = {
   chosenWebsiteName: '',
   currentPathname: '',
   getVoterGuideSettingsDashboardEditMode: '',
+  googleAnalyticsEnabled: false,
+  googleAnalyticsPending: false,
   hideWeVoteLogo: false,
   hostname: '',
   observableUpdateCounter: 0,
@@ -33,7 +36,8 @@ const nonFluxState = {
   showShareModal: false,
   showSharedItemModal: false,
   showSignInModal: false,
-  siteConfigurationHasBeenRetrieved: true,
+  signInStateChanged: false,
+  siteConfigurationHasBeenRetrieved: true, // set to false if we use siteConfiguration
   siteOwnerOrganizationWeVoteId: '',
   storeSignInStartFullUrl: false,
   voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
@@ -60,6 +64,16 @@ export default {
     // Force the Header to evaluate whether it should display
     nonFluxState.showHeader = Date.now();
     messageService.sendMessage('state updated showHeader');
+  },
+
+  setGoogleAnalyticsEnabled (enabled) {
+    nonFluxState.googleAnalyticsEnabled = enabled;
+    messageService.sendMessage('state updated googleAnalyticsEnabled');
+  },
+
+  setGoogleAnalyticsPending (enabled) {
+    nonFluxState.googleAnalyticsPending = enabled;
+    messageService.sendMessage('state updated googleAnalyticsPending');
   },
 
   setScrolled (scrolledDown) {
@@ -128,6 +142,11 @@ export default {
     messageService.sendMessage('state updated showSignInModal');
   },
 
+  setSignInStateChanged (signin) {
+    nonFluxState.signInStateChanged = signin;
+    messageService.sendMessage('state updated signInStateChanged');
+  },
+
   setVoterFirstRetrieveInitiated (voterFirstRetrieveInitiated) {
     nonFluxState.voterFirstRetrieveInitiated = voterFirstRetrieveInitiated;
     messageService.sendMessage('state updated voterFirstRetrieveInitiated');
@@ -157,6 +176,10 @@ export default {
     return nonFluxState.chosenAboutOrganizationExternalUrl;
   },
 
+  getChosenGoogleAnalyticsTrackingID () {
+    return nonFluxState.chosenGoogleAnalyticsTrackingID;
+  },
+
   getChosenPreventSharingOpinions () {
     return nonFluxState.chosenPreventSharingOpinions;
   },
@@ -181,6 +204,14 @@ export default {
     return nonFluxState.currentPathname;
   },
 
+  getGoogleAnalyticsEnabled () {
+    return nonFluxState.googleAnalyticsEnabled;
+  },
+
+  getGoogleAnalyticsPending () {
+    return nonFluxState.googleAnalyticsPending;
+  },
+
   getHideWeVoteLogo () {
     return nonFluxState.hideWeVoteLogo;
   },
@@ -200,6 +231,10 @@ export default {
   getShareModalStep () {
     // console.log('AppObservableStore shareModalStep:', nonFluxState.shareModalStep);
     return nonFluxState.shareModalStep;
+  },
+
+  getSignInStateChanged () {
+    return nonFluxState.signInStateChanged;
   },
 
   getSiteOwnerOrganizationWeVoteId () {
